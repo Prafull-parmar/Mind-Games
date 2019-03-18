@@ -1,0 +1,296 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{commath}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage[export]{adjustbox}
+\usepackage{caption}
+\usepackage{subcaption}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+    
+\graphicspath{{Images/}}
+
+\begin{document}
+
+\title{P300 Speller System for Brain Computer Interface
+}
+
+\author{\IEEEauthorblockN{Shraddha Suratkar}
+\IEEEauthorblockA{\textit{Dept. of  CE and IT.} \\
+\textit{Veermata Jijabai Technological Institute}\\
+Mumbai, India \\
+sssuratkar@ce.vjti.ac.in}
+\and
+\IEEEauthorblockN{Rahul R. Ingale}
+\IEEEauthorblockA{\textit{Dept. of Electrical Engg.} \\
+\textit{Veermata Jijabai Technological Institute}\\
+Mumbai, India \\
+rringale@el.vjti.ac.in}
+\and
+\IEEEauthorblockN{PraveenKumar L. Suthar}
+\IEEEauthorblockA{\textit{Dept. of  CE and IT.} \\
+\textit{Veermata Jijabai Technological Institute}\\
+Mumbai, India \\
+pksuthar\_b15@ce.vjti.ac.in}
+\and
+\IEEEauthorblockN{Prafull D. Parmar}
+\IEEEauthorblockA{\textit{Dept. of  CE and IT.} \\
+\textit{Veermata Jijabai Technological Institute}\\
+Mumbai, India \\
+pdparmar\_b15@ce.vjti.ac.in}
+\and
+\IEEEauthorblockN{Yash B. Barapatre}
+\IEEEauthorblockA{\textit{Dept. of  CE and IT.} \\
+\textit{Veermata Jijabai Technological Institute}\\
+Mumbai, India \\
+ybbarapatre\_b15@ce.vjti.ac.in}
+\and
+\IEEEauthorblockN{Aditya M. Samant}
+\IEEEauthorblockA{\textit{Dept. of  CE and IT.} \\
+\textit{Veermata Jijabai Technological Institute}\\
+Mumbai, India \\
+amsamant\_b15@ce.vjti.ac.in}
+}
+
+\maketitle
+\thispagestyle{plain}
+\pagestyle{plain}
+\begin{abstract}
+The P300 Speller System for Brain Computer Interface has an objective of effectively communicating with patients having motor neuron diseases. The system makes use of the electroencephalogram signals recorded from the scalp, as the patient responds to some visual stimuli. A rare visual event leads to an event-related potential (ERP), which is detected in the electroencephalogram after approximately 300 ms as per the oddball paradigm. The recorded data is then used to train a classifier for predicting the sequence of letters and digits that the patient wants to convey. Such a system would act as a potent manner of expression for the suffering patients.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Brain Computer Interface (BCI), electroencephalogram (EEG), neural network, event-related potentials (ERPs), oddball paradigm, P300. 
+\end{IEEEkeywords}
+
+\section{Introduction}
+People having neurological disabilities may face immense difficulties in communicating with others. Brain Computer Interface (BCI) proves to be an effective means of communication for them. Over the years, the BCI technology has had implementations from controlling wheelchairs to providing as an additional channel of control in computer games. An electroencephalograph placed on the scalp of the patient, can record their brain waves as a function of time. This electroencephalogram on analysis, shows elevated event related potentials as the patient's response to external stimuli. 
+
+The P300 Speller System involves working with the electroencephalogram recorded in response to visual stimuli. For this purpose, the electrodes of the electroencephalograph are placed on the skull above the two occipital lobes of the human brain. These lobes are located in the rearmost portion of the cerebrum and are responsible for generating waves in response to what the patient sees. This specific arrangement is derived from the 10-20 system.  
+
+A machine learning model trained on this temporal data allows us to predict, based on current wave patterns, if the patient is being visually stimulated and how. The data recorded for this purpose is highly imbalanced and has to be appropriately processed and filtered before being acted upon. The model detects and labels anomalous wave patterns, identifying similar patterns while testing.
+
+The work done in this paper is based out of devising the data collection methods, handling network channels, pre-processing the data and training a classifier on it. Details regarding these methods have been explained in the subsequent sections.  
+
+
+
+
+\section{Methods}
+
+%\subsection{Maintaining the Integrity of the Specifications}
+
+In the P300 speller paradigm, we present a 6x6 matrix containing 36 characters. Each row and column of the matrix is highlighted in a single trial. If the character that the user focuses on is highlighted in a trial, then a P300 spike is seen in the electroencephalogram. Out of the 12 trials in a single epoch, two P300 spikes corresponding to a row and a column can be observed.
+
+After highlighting the rows and columns for a fixed number of epochs, all the epochs are averaged out and then a specific row and column from this set of rows and columns which is mostly likely to be associated with the P300 spike is determined.
+
+\subsection{Literature Survey}
+Although work in this domain has been majorly based on the freely available dataset by BCI, a few researchers have collected their own datasets by designing separate systems for this purpose. Multiple researches have been done based on which certain conclusions have been derived.
+
+In the paper by L.A. Farwell and E. Donchin \cite{b1}, where a system for communication through a computer was developed and tested, a study of 5 healthy volunteers was done. The system was used to communicate a 5 letter word to a computer and the primary purpose was to determine the number of trials and the rate of event presentation that are required to achieve a specific level of accuracy in communication.
+Four different algorithms were used to compute the scores: Stepwise linear discriminant analysis (SWDA), Peak Picking, Area and Covariance. A low rate of communication was achieved at 1 character every 26 seconds or 2.3 chars per minute. Also, data from only 5 subjects was used, so it did not perform well across subjects and across sessions.
+
+Alain Rakotomamonjy and Vincent Guigue \cite{b2} used methods like SVM and LDA on the data made available by BCI. This paper presents the algorithm that has provided the best classification performance on the dataset produced by a P300 speller matrix during the BCI III competition. A multiple classifier system is developed for each subject and each of the single classifier is a linear support vector machine . They achieved a correct classifier performance of 73.5\% and 96.5\% for respectively 5 and 15 character sequences and this performance has been evaluated on a test set composed of 200 spelling characters. Drawback of this paper is that it provides only offline analysis of the classification algorithms and online capacity has to be verified . Also BCI competition III has only provided datasets from 2 different subjects although from different acquisition sessions.
+The algorithm used is not able to handle inter-subject variability since they have only used signals from the same subject for training and testing. This issue of inter-subject learning is important in order to make this BCI speller efficient with a new patient and without the need of a training session.
+
+Matthias Kaper, Peter Meinicke and Thomas Lingner \cite{b3} developed a system which involved a subject being shown a 6x6 matrix, containing 36 characters. Every trial included a sequence of highlighting the rows and columns, where each row and column was highlighted once. Whenever the character on which the subject was concentrating was highlighted, a P300 component occurred in the EEG. An SVM classifier was trained for binary classification in a training set labeled with “1” and “-1” for the presence/absence of P300 spike. This trained classifier then computed the value of its discriminant function within a test set, with a high score indicating presence of a P300 spike.
+By performing five-fold cross validation on the training set, they obtained optimal values for the parameters of SVM. This helped them in achieving an accuracy of 84.5\% in distinguishing between the P300 and non-P300 signals.
+
+Sourav Kundu and Samit Ari \cite{b4} used normalization methods like Z-Score Normalization, Min-Max Normalization and Median Absolute Deviation (MAD) with the same ensemble technique, to normalize the scores of each of classifiers for reducing classifier variability. The proposed Min-Max normalization achieved 76\% on 5 epoch and 97\% on 15 epoch compared to initial method of 73.5\% and 96.5\%. the accuracy for Z-score was 75.5\% and 97.5\% respectively and that for MAD was 76\% and 98\% respectively.
+
+Benjamin Blankertz et al. [\cite{b8}] recorded the BCI Competition III Dataset II, which represented a complete record of P300 evoked potentials (three sessions from one subject), with the Wadsworth BCI2000 software using the paradigm described in and originally by Farwell and Donchin \cite{1}. The objective in the contest was to use the data from two sessions (i.e., 42 characters) to train a classifier and to then predict the 31 characters in the one remaining session.
+The user was presented with a 6 by 6 matrix of characters. The user’s task was to focus attention on characters in a word that was prescribed by the investigator (i.e., one character at a time). The six rows and six columns of this matrix were successively and randomly intensified at a rate of 5.7 Hz. Two out of 12 intensifications of rows or columns highlighted the desired character (i.e., one particular row and one particular column).
+Signals were collected from one subject in three sessions and digitized at 240 Hz. Each session consisted of a number of runs. In each run, the subject focused attention on a series of characters. It was concluded that 5 epochs produced the same result as 15 epochs.
+
+
+\subsection{Literature Survey Conclusion}
+
+Since all these proposed system are based on the offline data that are provided by BCI there is little knowledge about the performance of these same algorithms on real-time EEG data. Also the dataset provided only consist of 2 or 5 subjects which leads to less accurate results for person not present in the training and testing phase.
+
+\subsection{Overall System Flow}
+
+ EEG signal data from the User (Subject) is collected by the Enobio EEG machine module which then communicates the signal data to the NIC module which stores the data.The other modules involved are the Machine Learning (ML) module and P300 Graphical User Interface (GUI) module, which are sub-modules of the P300 module. The GUI module sends the markers to the NIC module during the simulation of the row and columns. The NIC sends the collected EEG signal data containing markers and timestamp to the ML module. ML module analyses the data and predicts the character which is then communicated to the GUI module, which highlights the respective character on the P300 speller grid. All the modules and the relationships among them are shown in the overall system diagram shown in Fig. \ref{fig:P300-Systemdiagram}.
+ 
+ \begin{figure}[htbp]
+\centering{\frame{\includegraphics[width=.9\columnwidth,right]{P300-Systemdiagram}}}
+\caption{System diagram for P300 Speller.}
+\label{fig:P300-Systemdiagram}
+\end{figure}
+
+
+
+
+\subsection{Data Collection}
+The data has been collected using an Enobio-8 3G device. Enobio-8 3G is a wireless and portable electrophysiology sensor system for the recording of the electrical activity of the human brain having 8 channels. Refer Fig.  \ref{fig:Enobio_img1} and Fig. \ref{fig:Enobio_img2} for snapshots of the Enobio device used for collection of EEG data. The device is connected to  Neuroelectrics Instrument Controller (NIC) software which collects the recordings from the device and stores them in three different file formats namely ".edf", ".easy" and ".info". The recorded file contains 8 fields containing EEG data values in nano-volts, a column for marker and timestamp column for additional information about that particular record.Sample of the raw EEG data collected using the device is shown in Fig. \ref{fig:Raw_data}.
+\begin{figure}
+\centering
+\begin{subfigure}{.5\columnwidth}
+  \centering
+  \frame{\includegraphics[width=\linewidth,angle=-90]{Enobio_img1.jpg}}
+  \caption{Back-view.}
+  \label{fig:Enobio_img1}
+\end{subfigure}%
+%\hspace{5mm}
+\begin{subfigure}{.5\columnwidth}
+  \centering
+  \frame{\includegraphics[width=\linewidth,angle=-90]{Enobio_img2.jpg}}
+  \caption{Side-view.}
+  \label{fig:Enobio_img2}
+\end{subfigure}
+\caption{Enobio EEG device snapshots}
+\label{fig:Enobio_device}
+\end{figure}
+% \begin{figure}[htbp]
+% \centerline{\includegraphics[width=9cm,height=9cm,angle=-90]{Enobio_img1}}
+% \caption{Enobio device back-view.}
+% \label{fig:Enobio_img1}
+% \end{figure}
+
+% \begin{figure}[htbp]
+% \centerline{\includegraphics[width=9cm,height=9cm ,angle=-90]{Enobio_img2}}
+% \caption{Enobio device side-view.}
+% \label{fig:Enobio_img2}
+% \end{figure}
+
+\begin{figure}[htbp]
+\frame{\includegraphics[width=9cm,height=3cm]{Raw_data}}
+\caption{Raw EEG Data file.}
+\label{fig:Raw_data}
+\end{figure}
+ A P300 speller system has been implemented which generates visual stimulus and has characters organized in a 6x6 grid. A snapshot of the P300 Speller is shown in Fig. \ref{fig:P300speller}. The 6 rows and 6 columns are randomly intensified and de-intensified one by one for 150 ms and 100 ms respectively in a single epoch. An epoch is a sequence of intensification of the rows and columns of the P300 grid. During an epoch each row and column is intensified exactly once in random manner. For each row and column highlighted in a given epoch, we have taken the voltage or amplitude values for the 300 ms after the onset of the stimuli from the electrode positions PO7, P3, Fz, Cz, Pz, P4, PO8, and Oz.
+Placement of the electrodes has been done using the International 10-20 system. Selected electrode positions are shown in Fig. \ref{fig:image2}.   After that, the collected data was band-pass filtered (5-30 Hz) and sent for preprocessing.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=9cm, height=9cm]{P300speller}}
+\caption{P300 Speller.}
+\label{fig:P300speller}
+\end{figure}
+
+\begin{figure}[htbp]
+\centerline{\frame{\includegraphics[width=.9\columnwidth,right]{image2}}}
+\caption{International 10-20 System.}
+\label{fig:image2}
+\end{figure}
+
+\subsection{Data Communication}
+The real time data collected using the Enobio device through NIC software is communicated to the P300 speller system which does the data processing. For this communication we have used \textsl{Lab Streaming Layer (LSL)}. 
+
+Lab streaming layer is a system for synchronizing streaming data for live analysis or recording. LSL is an convenient and reliable way to send Enobio EEG stream to applications that can record or manipulate the data, which in our case is the P300 speller system. Marker are also sent to the NIC software to mark the EEG recording at the start of an stimulus. markers which are the index of the row or column that was intensified at the corresponding timestamp in the P300 speller system. 
+
+
+
+
+\subsection{Data Preprocessing}
+Preprocessing is done after the collected data has been filtered using the line noise filter and the bandpass filter. Here, we convert the raw data into a format suitable to work on. 
+
+Initially, the raw file which is in the .easy file format, is read and with the help of the marker field, data is labelled as positive and negative. Unnecessary data which does not pertain to the task is trimmed off. Then, we take an average of all the epochs for a particular character where each epoch consists of 125 * 12 = 1500 records. This is done to remove noise which might be present in a specific epoch as well as to reduce the size of the data for each character.
+Then the EEG data is band pass filtered in the range of 5-30Hz. A sample of the preprocessed file is shown in Fig. \ref{fig:PreprocessedData}.
+
+\begin{figure}[htbp]
+\frame{\includegraphics[width=9cm,height=4cm]{Preprocess_Data}}
+\caption{EEG Data after Data Preprocessing.}
+\label{fig:PreprocessedData}
+\end{figure}
+
+
+\subsection{Data Analysis}
+After preprocessing, data was analyzed to detect the P300 wave in it. The P300 wave is an Event Related Potential (ERP), i.e, a positive deflection in the electroencephalogram (EEG) signal that occurs between 250 ms to 500 ms after stimulus onset. P300 is based on the oddball paradigm. The oddball paradigm presents the participant with a sequence of repetitive audio or visual stimuli, infrequently interrupted by an unexpected stimulus. 
+
+
+\section{Support Vector Machines}
+A Support Vector Machine (SVM) is a discriminative classifier and an excellent tool for classification problems which generalizes well to unseen data.
+SVM classifier was designed by Vapnik for binary class problem. 
+A hyperplane can be constructed to perform binary classification, which maximizes the separation margin between the two classes of the dataset.
+Considering a training data of $M$ points:
+$$(x_i,y_i)_{i=1}^M$$ 
+
+where $x_i \in \mathbb{R}^M$ is input and $y_i \in \{-1,1\}$ is output. We find an optimal hyperplane which maximizes the margin boundary and minimizes the error ($\xi$). We use quadratic programming to solve this optimization problem.
+\begin{equation}
+    \min_{w,\xi}\Bigg[\frac{1}{2}\norm{w^2}+ C\sum_{i=1}^{M} \xi_i\Bigg]
+\end{equation}
+
+where $w$ is the weight vector and $C$ is the regularization parameter.The regularization parameter affects the prediction of the classifier.When we use small values for $C$ the classifier ignores points near the margin and increases the margin boundary, whereas when $C$ takes larger values classifier considers all the points and to do so it reduces the margin boundary.
+
+
+The Lagrangian representation of above equation is :
+\begin{equation}
+    \max_{\alpha}\Bigg[\sum_{i=1}^{M} \alpha_i -\frac{1}{2} \sum_{i=1}^{M} \alpha_i\alpha_j y_i y_j k(x_i,x_j)\Bigg]
+\end{equation}
+\begin{equation}
+    w = \sum_{i=1}^{M} y_i\alpha_i\Phi(x_i)
+\end{equation}
+\begin{equation}
+    \sum_{i=1}^{M} \alpha_i y_i = 0, 0<\alpha_i < C, \forall_i
+\end{equation} 
+where $\alpha_i$ are Lagrange multipliers related to each training
+point, $k(x_i,x_j)$ represent the kernel function. This results in the nonlinear discriminant function
+\begin{equation}
+    S(x) = \sum_{i=1}^{M} y_i\alpha_i k(x_i,x_j) + b
+\end{equation}
+
+where $b$ is bias and a real constant 
+    
+
+
+
+
+% \subsection{Units}
+% \begin{itemize}
+% \item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
+% \item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
+% \item Do not mix complete spellings and abbreviations of units: ``Wb/m\textsuperscript{2}'' or ``webers per square meter'', not ``webers/m\textsuperscript{2}''. Spell out units when they appear in text: ``. . . a few henries'', not ``. . . a few H''.
+% \item Use a zero before decimal points: ``0.25'', not ``.25''. Use ``cm\textsuperscript{3}'', not ``cc''.)
+% \end{itemize}
+
+
+
+
+
+\section{Dataset Used}
+The NeuroElectrics Enobio3G wireless headset has been used in the experiment to collect the bioelectric signals via the 8 dry electrodes positioned on the scalp. The positioning is based on the International 10-20 system, whereby the electrodes are placed on PO7, P3, Fz, Cz, Pz, P4, PO8 and Oz as shown in Figure 1. Data is sampled at a rate of 500 Hz, with a 0-50 Hz line noise filter within the Enobio3G device.
+
+The data is collected in different sessions. Every session is made out of various runs and for every run a subject is asked to spell a character. The rows and columns of the character matrix are intensified for 150 ms followed by a de-intensification of 100 ms. For one epoch we have a total of 12 intensifications which are repeated for given a number of epochs for a single character. The EEG data is continuously collected from the 8-channel Enobio3G device. There is a word training mode in which the user is trained on a user-defined set of characters and then we do training on the user given word. After the classifier is trained on the data collected we move on to the test mode where the user is asked to concentrate on any letter and the trained classifier makes predictions on which row and columns has a P300 wave from the real time data which is fed from the device and then based on the row and column predicted by the classifier the corresponding character is highlighted.
+
+
+
+
+
+
+
+ 
+
+
+
+
+\section{Discussions}
+In this research project, the attempt is to implement an efficient P300 speller system. Data has been collected from a wide range of subjects. The motive is to achieve an end to end system which can work on real-time data and can also be personalized for each individual user. The approach is to use SVM for classifying the real-time EEG signals in order to predict the sequence of characters that the subject has in their mind.   
+
+
+% \section*{Conclusion}
+% There is a 
+
+\begin{thebibliography}{00}
+\bibitem{b1} L.A. Farwell and E. Donchin, ``Talking off the top of your head: toward a mental prosthesis utilizing event-related brain potentials,'' Electroencephal. Clin. Neurophysiol., vol. 70, no. 6, pp. 510–523, 1988.
+\bibitem{b2} A. Rakotomamonjy and V. Guigue, "BCI competition III: dataset II- ensemble of SVMs for BCI P300 speller," IEEE Trans. Biomed. Eng., vol. 55, pp. 1147, 2008.
+\bibitem{b3} M. Kaper, P. Meinicke and T. Lingner, "BCI Competition 2003—Data Set IIb: Support Vector Machines for the P300 Speller Paradigm,” 2017 8th International Conference on Computing, Communication and Networking Technologies (ICCCNT), Delhi, 2017.
+\bibitem{b4} S. Kundu and S. Ari, "Score normalization of ensemble SVMs for brain-computer interface P300 speller," 2017 8th International Conference on Computing, Communicating and Networking Technologies (ICCCNT), Delhi, 2017.
+\bibitem{b5} L. F. Nicolas-Alonso and J. Gomez-Gill, "Brain computer interfaces, a review,", Sensors, vol. 12, no.2, pp. 1211-1279, 2012.
+\bibitem{b6} R. Chaurasiya, N. Londhe and S. Ghosh, "An efficient P300 Speller System for Brain- Computer Interface," 2015 International Conference on Signal Processing, Computing and Control (2015 ISPCC).
+\bibitem{b7} S. Xing, R. McCardle, S. Xie, "Reading the mind: The potential of electroencephalography in brain computer interfaces," 19th International Conference on Mechatronics and Machine Vision in Practice (M2VIP), Auckland, 2012.
+\bibitem{b8} B. Blankertz, K. R. Muller, G. Curio, T. M. Vaughan, G.
+Schalk, J. R. Wolpaw, A. Schlogl, C. Neuper, G.
+Pfurtscheller, T. Hinterberger, M. Schroder, and N.
+Birbaumer, “The BCI Competition 2003: progress and
+perspectives in detection and discrimination of EEG single
+trials,” IEEE Trans Biomed Eng, vol. 51, no. 6, pp. 1044-
+51, Jun, 2004
+\end{thebibliography}
+\vspace{12pt}
+
+
+\end{document}
